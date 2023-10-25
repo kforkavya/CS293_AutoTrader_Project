@@ -4,7 +4,7 @@
 #include <iostream>
 
 // Structure to represent each
-// node in a stock red-black tree
+// node in a deal red-black tree
 struct node {
 	std::string company_name; // Company of the stock
     int price_estimator; //Price Estimator for this company stock (Last traded price)

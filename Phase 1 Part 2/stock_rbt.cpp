@@ -47,11 +47,11 @@ ptr Stock_RBT::access(std::string key, bool& inserted_first_time)
     {
         if(temp->company_name == key)
             return temp;
-        if(temp->company_name < key && temp->left!=NULL)
+        if(temp->company_name > key && temp->left!=NULL)
             temp = temp->left;
-        else if(temp->company_name > key && temp->right!=NULL)
+        else if(temp->company_name < key && temp->right!=NULL)
             temp = temp->right;
-        else if(temp->company_name < key && temp->left==NULL)
+        else if(temp->company_name > key && temp->left==NULL)
         {
             inserted_first_time = true;
             ptr newNodePtr = new node(key);

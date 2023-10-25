@@ -22,7 +22,8 @@ void calc_pre_computed_table()
 int hashValue(std::string key){
     int hashValue = 0;
     double random = fractional(5381*hash_ratio);
-    for (int i = 0; i < key.size(); i++)
+    int minimum = 1000 < key.length() ? 1000 : key.length();
+    for (int i = 0; i < minimum; i++)
     {
         double test = fractional(pre_computed_table[i] * key[i]);
         random = fractional(random + test);
