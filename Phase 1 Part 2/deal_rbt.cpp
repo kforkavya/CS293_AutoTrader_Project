@@ -378,7 +378,7 @@ void insertFix(deal_ptr k) {
         else if(temp->deal_string > key && temp->left==TNULL)
         {
             inserted_first_time = true;
-            deal_ptr newNodePtr = new deal_node(key, stock_structure, tokenised_string, price);
+            deal_ptr newNodePtr = new deal_node(key, tokenised_string, price);
             newNodePtr->left = TNULL;
             newNodePtr->right = TNULL;
             newNodePtr->parent = temp;
@@ -389,7 +389,7 @@ void insertFix(deal_ptr k) {
         else if(temp->deal_string < key && temp->right==TNULL)
         {
             inserted_first_time = true;
-            deal_ptr newNodePtr = new deal_node(key, stock_structure, tokenised_string, price);
+            deal_ptr newNodePtr = new deal_node(key, tokenised_string, price);
             newNodePtr->left = TNULL;
             newNodePtr->right = TNULL;
             newNodePtr->parent = temp;
@@ -399,7 +399,7 @@ void insertFix(deal_ptr k) {
         }
     }
     //if code reaches here, it means root itself was null
-    root = new deal_node(key, stock_structure, tokenised_string, price);
+    root = new deal_node(key, tokenised_string, price);
     root->left = TNULL;
     root->right = TNULL;
     inserted_first_time = true;

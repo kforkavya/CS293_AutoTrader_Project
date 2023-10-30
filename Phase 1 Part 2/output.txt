@@ -1,29 +1,5 @@
 Receiver is listening on port 8889
+A 100 s
 No Trade
 No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-Z 3 Y 2 10 b
-Y -3 Z 2 200 s
-Y 5 Z 1 90 s
-280
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
-No Trade
+A 110 s

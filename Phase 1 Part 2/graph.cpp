@@ -6,7 +6,6 @@ using namespace std;
 struct deal_node
 {
   std::string deal_string; // Deal String
-  string actual_stock_structure;
   vector<pair<string, int>> tokenised_string;
   int price; //Price for that deal
   int best_selling_price; //Best Selling Price
@@ -20,12 +19,13 @@ struct deal_node
   deal_node* right; // right-child
   deal_node* left; // left child
   deal_node() {}
-  deal_node(std::string key, string stock_structure, vector<pair<string, int>> tokenised_string, int price_deal): deal_string(key), price(price_deal), actual_stock_structure(stock_structure), tokenised_string(tokenised_string), best_selling_price(-1.0), no_best_sp(true), best_sp_pointer(NULL), best_buying_price(-1.0), no_best_bp(true), best_bp_pointer(NULL), color(1), parent(nullptr), right(nullptr), left(nullptr) {}
+  deal_node(std::string key, vector<pair<string, int>> tokenised_string, int price_deal): deal_string(key), price(price_deal), tokenised_string(tokenised_string), best_selling_price(-1.0), no_best_sp(true), best_sp_pointer(NULL), best_buying_price(-1.0), no_best_bp(true), best_bp_pointer(NULL), color(1), parent(nullptr), right(nullptr), left(nullptr) {}
 };
 
 typedef deal_node* deal_ptr;
 
 struct GraphNode{
+    std::string actual_stock_structure;
     int order_no;
     deal_ptr deal_pointer;
     char tag;
@@ -35,7 +35,7 @@ struct GraphNode{
     GraphNode* prev;
     GraphNode* next;
     GraphNode() {}
-    GraphNode(deal_node* deal_pointer, int key, char tag, int price, int hash): hash(hash), prev(NULL), next(NULL), deal_pointer(deal_pointer), order_no(key), tag(tag), price(price) {}
+    GraphNode(deal_node* deal_pointer, int key, char tag, int price, int hash, std::string a): hash(hash), prev(NULL), next(NULL), deal_pointer(deal_pointer), order_no(key), tag(tag), price(price), actual_stock_structure(a) {}
 };
 
 typedef GraphNode *graph_ptr;
@@ -108,9 +108,9 @@ class Graph_List {
         tail=NULL;
     }
 
-    GraphNode* insert_order(deal_node* deal_pointer, char tag, int order_no, int price, int hash)
+    GraphNode* insert_order(deal_node* deal_pointer, char tag, int order_no, int price, int hash, std::string stock_structure)
     {
-        GraphNode* temp = insertGraphNode(deal_pointer, order_no, tag, price, hash);
+        GraphNode* temp = insertGraphNode(deal_pointer, order_no, tag, price, hash, stock_structure);
         if(tag == 's')
             deal_pointer->best_bp_pointer = temp;
         else
@@ -118,9 +118,9 @@ class Graph_List {
         return temp;
     }
 
-    GraphNode* insertGraphNode(deal_node* deal_pointer, int order_no, char tag, int price, int hash)
+    GraphNode* insertGraphNode(deal_node* deal_pointer, int order_no, char tag, int price, int hash, std::string stock_structure)
     {
-        GraphNode* temp = new GraphNode(deal_pointer, order_no, tag, price, hash);
+        GraphNode* temp = new GraphNode(deal_pointer, order_no, tag, price, hash, stock_structure);
         if(root==NULL)
         {
             root=tail=temp;
@@ -195,6 +195,7 @@ class Graph_List {
 
     void delete_best_sp_order(deal_ptr deal_pointer)
     {
+        //cout<<"Deleting : "<<deal_pointer->best_sp_pointer->actual_stock_structure<<" "<<deal_pointer->best_sp_pointer->price<<endl;
         deleteGraphNode(deal_pointer->best_sp_pointer);
         deal_pointer->best_sp_pointer=NULL;
     }

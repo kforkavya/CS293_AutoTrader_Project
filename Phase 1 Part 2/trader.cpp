@@ -13,8 +13,13 @@ int main(int argc, char *argv[]) {
         Receiver rcv;
         string message = rcv.readIML();
         int curr_length = message.length();
+        while(curr_length == 0)
+        {
+            message = rcv.readIML();
+            curr_length = message.length();
+        }
         bool input_finished = (message[curr_length - 1] == '$') ? true : false;
-
+        if(input_finished) rcv.terminate();
         //some pre-processing
         Stock_RBT* Stocks = new Stock_RBT[10000];
         calc_pre_computed_table();
@@ -23,6 +28,7 @@ int main(int argc, char *argv[]) {
         int i = 0;
         while(message[i]!='$')
         {
+            if(message[i+1] == '$') break;
             //Input extraction
             string stock = "";
             while(message[i]!=' ')
@@ -34,7 +40,13 @@ int main(int argc, char *argv[]) {
                 {
                     message = rcv.readIML();
                     curr_length = message.length();
+                    while(curr_length == 0)
+                    {
+                        message = rcv.readIML();
+                        curr_length = message.length();
+                    }
                     input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    if(input_finished) rcv.terminate();
                     i = 0;
                 }
             }
@@ -43,20 +55,32 @@ int main(int argc, char *argv[]) {
             {
                 message = rcv.readIML();
                 curr_length = message.length();
+                while(curr_length == 0)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                }
                 input_finished = (message[curr_length - 1] == '$') ? true : false;
+                if(input_finished) rcv.terminate();
                 i = 0;
             }
             string price_string = "";
             while(message[i]!=' ')
             {
                 if(message[i] >= '0' && message[i] <= '9')
-                price_string = price_string + message[i];
+                    price_string = price_string + message[i];
                 i++;
                 if(i == curr_length && input_finished == false)
                 {
                     message = rcv.readIML();
                     curr_length = message.length();
+                    while(curr_length == 0)
+                    {
+                        message = rcv.readIML();
+                        curr_length = message.length();
+                    }
                     input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    if(input_finished) rcv.terminate();
                     i = 0;
                 }
             }
@@ -65,7 +89,13 @@ int main(int argc, char *argv[]) {
             {
                 message = rcv.readIML();
                 curr_length = message.length();
+                while(curr_length == 0)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                }
                 input_finished = (message[curr_length - 1] == '$') ? true : false;
+                if(input_finished) rcv.terminate();
                 i = 0;
             }
             int price = stoi(price_string);
@@ -75,7 +105,13 @@ int main(int argc, char *argv[]) {
             {
                 message = rcv.readIML();
                 curr_length = message.length();
+                while(curr_length == 0)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                }
                 input_finished = (message[curr_length - 1] == '$') ? true : false;
+                if(input_finished) rcv.terminate();
                 i = 0;
             }
             i++;
@@ -83,7 +119,13 @@ int main(int argc, char *argv[]) {
             {
                 message = rcv.readIML();
                 curr_length = message.length();
+                while(curr_length == 0)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                }
                 input_finished = (message[curr_length - 1] == '$') ? true : false;
+                if(input_finished) rcv.terminate();
                 i = 0;
             }
 
@@ -100,16 +142,21 @@ int main(int argc, char *argv[]) {
                 if(stock_pointer->no_best_bp == false && stock_pointer->best_buying_price < price)
                     cancelled = true;
                 //If this price is lower than the best buying price yet, then I can improve on it.
-                if(stock_pointer->no_best_bp == true || (stock_pointer->no_best_bp == false && stock_pointer->best_buying_price > price))
+                if(cancelled == false && (stock_pointer->no_best_bp == true || (stock_pointer->no_best_bp == false && stock_pointer->best_buying_price > price)))
                 {
                     stock_pointer->best_buying_price = price;
                     stock_pointer->no_best_bp = false;
                 }
                 //Cancellation Law
-                if(stock_pointer->no_best_sp == false && stock_pointer->best_selling_price == price)
+                if(cancelled == false && stock_pointer->no_best_sp == false && stock_pointer->best_selling_price == price)
                 {
                     stock_pointer->best_selling_price = -1;
                     stock_pointer->no_best_sp = true;
+                    if(stock_pointer->best_buying_price == price)
+                    {
+                        stock_pointer->no_best_bp = true;
+                        stock_pointer->best_buying_price = -1;
+                    }
                     cancelled = true;
                 }
             }
@@ -122,16 +169,21 @@ int main(int argc, char *argv[]) {
                 if(stock_pointer->no_best_sp == false && stock_pointer->best_selling_price > price)
                     cancelled = true;
                 //If this price is higher than the best selling price yet, then I can improve on it.
-                if(stock_pointer->no_best_sp == true || (stock_pointer->no_best_sp == false && stock_pointer->best_selling_price < price))
+                if(cancelled == false && (stock_pointer->no_best_sp == true || (stock_pointer->no_best_sp == false && stock_pointer->best_selling_price < price)))
                 {
                     stock_pointer->best_selling_price = price;
                     stock_pointer->no_best_sp = false;
                 }
                 //Cancellation Law
-                if(stock_pointer->no_best_bp == false && stock_pointer->best_buying_price == price)
+                if(cancelled == false && stock_pointer->no_best_bp == false && stock_pointer->best_buying_price == price)
                 {
                     stock_pointer->best_buying_price = -1;
                     stock_pointer->no_best_bp = true;
+                    if(stock_pointer->best_selling_price == price)
+                    {
+                        stock_pointer->no_best_sp = true;
+                        stock_pointer->best_selling_price = -1;
+                    }
                     cancelled = true;
                 }
             }
@@ -145,9 +197,9 @@ int main(int argc, char *argv[]) {
                     stock_pointer->price_estimator = price;
                     cout<<stock<<" "<<price<<" ";
                     if(tag == 'b')
-                        cout<<"s\n";
+                        cout<<"s"<<endl;
                     else
-                        cout<<"b\n";
+                        cout<<"b"<<endl;
                 }
                 else if(tag == 'b' && inserted_first_time == false)
                 {
@@ -162,7 +214,7 @@ int main(int argc, char *argv[]) {
                         }
                     }
                     else
-                        cout<<"No Trade\n";
+                        cout<<"No Trade"<<endl;
                 }
                 else
                 {
@@ -177,7 +229,7 @@ int main(int argc, char *argv[]) {
                         }
                     }
                     else
-                        cout<<"No Trade\n";
+                        cout<<"No Trade"<<endl;
                 }
             }
         }
@@ -190,12 +242,19 @@ int main(int argc, char *argv[]) {
         Receiver rcv;
         string message = rcv.readIML();
         int curr_length = message.length();
+        while(curr_length == 0)
+        {
+            message = rcv.readIML();
+            curr_length = message.length();
+        }
         bool input_finished = (message[curr_length - 1] == '$') ? true : false;
+        if(input_finished) rcv.terminate();
 
         //some pre-processing
         Deal_RBT* Deals = new Deal_RBT[10000];
         Graph_List* Graph = new Graph_List();
         calc_pre_computed_table();
+        int total_profit = 0;
         //extracting input
         int i = 0, order_no = 0;
         while(message[i]!='$')
@@ -210,7 +269,13 @@ int main(int argc, char *argv[]) {
                 {
                     message = rcv.readIML();
                     curr_length = message.length();
+                    while(curr_length == 0)
+                    {
+                        message = rcv.readIML();
+                        curr_length = message.length();
+                    }
                     input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    if(input_finished) rcv.terminate();
                     i = 0;
                 }
             }
@@ -227,6 +292,7 @@ int main(int argc, char *argv[]) {
             string price_deal_string = line.substr(first_space_index+1, second_space_index-first_space_index-1);
             int price_deal = stoi(price_deal_string);
             string stock_structure = line.substr(0, first_space_index);
+            //cout<<line<<endl;
             //finally processing
             vector<pair<string, int>> tokenised_string;
             string sorted_stock_structure;
@@ -237,6 +303,7 @@ int main(int argc, char *argv[]) {
             Deals[hash].access(sorted_stock_structure, deal_pointer, inserted_first_time, stock_structure, tokenised_string, price_deal);
             if(inserted_first_time == true)
             {
+                //cout<<"Hey"<<endl;
                 if(tag == 's')
                 {
                     deal_pointer->best_buying_price = price_deal;
@@ -288,6 +355,7 @@ int main(int argc, char *argv[]) {
                 //If this price is higher than the best selling price yet, then I can improve on it.
                 if(deal_pointer->no_best_sp == true || (deal_pointer->no_best_sp == false && deal_pointer->best_selling_price < price_deal))
                 {
+                    //cout<<"Here2"<<endl;
                     deal_pointer->best_selling_price = price_deal;
                     if(deal_pointer->no_best_sp==false) Graph->delete_best_sp_order(deal_pointer);
                     deal_pointer->no_best_sp = false;
@@ -308,6 +376,7 @@ int main(int argc, char *argv[]) {
             }
             if(deal_pointer->no_best_bp == true && deal_pointer->no_best_sp == true)
             {
+                //cout<<"Anyone"<<endl;
                 Deals[hash].deleteNode(deal_pointer);
             }
             if(cancelled==true)
@@ -316,7 +385,7 @@ int main(int argc, char *argv[]) {
             }
             else
             {
-                graph_ptr curr_order = Graph->insert_order(deal_pointer, tag, order_no, price_deal, hash);
+                graph_ptr curr_order = Graph->insert_order(deal_pointer, tag, order_no, price_deal, hash, stock_structure);
                 vector<graph_ptr> max_arbitrage_lane; int max_profit;
                 Graph->find_max_arbitrage(curr_order, max_arbitrage_lane, max_profit);
                 if(max_arbitrage_lane.size()==0)
@@ -327,7 +396,7 @@ int main(int argc, char *argv[]) {
                 {
                     for(int i = 0; i<max_arbitrage_lane.size(); i++)
                     {
-                        cout<<max_arbitrage_lane[i]->deal_pointer->actual_stock_structure<<" "<<max_arbitrage_lane[i]->price<<" ";
+                        cout<<max_arbitrage_lane[i]->actual_stock_structure<<" "<<max_arbitrage_lane[i]->price<<" ";
                         cout<<(max_arbitrage_lane[i]->tag == 's' ? 'b' : 's')<<endl;
                         char tag = max_arbitrage_lane[i]->tag;
                         int hash = max_arbitrage_lane[i]->hash;
@@ -352,10 +421,11 @@ int main(int argc, char *argv[]) {
                             }
                         }
                     }
-                    cout<<max_profit<<"\n";
+                    total_profit += max_profit;
                 }
             }
         }
+        cout<<total_profit<<endl;
         delete_pre_computed_table();
         delete Graph;
         delete[] Deals;
