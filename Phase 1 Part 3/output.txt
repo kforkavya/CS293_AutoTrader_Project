@@ -1,0 +1,5 @@
+Receiver is listening on port 8889
+No Trade
+A 5 5 3 b
+A 3 10 5 s
+35
