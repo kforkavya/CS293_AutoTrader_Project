@@ -597,7 +597,9 @@ class New_Graph_List {
             order_book_ptr iterator = root;
             while(iterator != NULL)
             {
+                //cout<<"Here"<<endl;
                 order_pointer->adjacent_nodes.push_back(make_pair(iterator->order_no, iterator));
+                //cout<<"Here2"<<endl;
                 iterator=iterator->next;
             }
             tail->next = order_pointer;
@@ -610,7 +612,7 @@ class New_Graph_List {
     {
         int order_no = thisnode->order_no;
         order_book_node* temp = tail;
-        while(temp->order_no > order_no)
+        while(temp!=NULL&&temp->order_no > order_no)
         {
             delete_adjacent_node(temp, order_no);
             temp = temp->prev;
@@ -618,18 +620,21 @@ class New_Graph_List {
         //now let's delete the node from the vertex list
         if(root==tail)
         {
+            temp->next = temp->prev = NULL;
             root=tail=NULL;
             return;
         }
         if(root==temp)
         {
             root=temp->next;
+            temp->next = NULL;
             root->prev=NULL;
             return;
         }
         if(tail==temp)
         {
             tail=temp->prev;
+            temp->prev=NULL;
             tail->next=NULL;
             return;
         }

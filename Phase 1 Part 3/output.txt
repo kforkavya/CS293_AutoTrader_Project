@@ -2,4 +2,44 @@ Receiver is listening on port 8889
 No Trade
 A 5 5 3 b
 A 3 10 5 s
-35
+No Trade
+A 5 5 3 b
+A 3 10 5 s
+No Trade
+A 5 5 3 b
+A 3 10 5 s
+A 3 10 5 s
+A 5 5 3 b
+No Trade
+A 3 10 5 s
+A 5 5 3 b
+A 5 5 3 b
+A 3 10 5 s
+No Trade
+A 5 5 3 b
+A 3 10 5 s
+A 3 10 5 s
+A 5 5 3 b
+No Trade
+A 3 10 5 s
+A 5 5 3 b
+No Trade
+A 3 10 5 s
+A 5 5 3 b
+No Trade
+A 3 10 10 s
+A 5 5 6 b
+No Trade
+A 3 10 5 s
+A 5 5 3 b
+No Trade
+A 3 10 5 s
+A 5 5 3 b
+No Trade
+A 3 10 5 s
+A 5 5 3 b
+No Trade
+A 3 10 5 s
+A 5 5 3 b
+No Trade
+560
