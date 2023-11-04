@@ -115,6 +115,7 @@ int main(int argc, char *argv[]) {
                 if(input_finished) rcv.terminate();
                 i = 0;
             }
+            assert(message[i]=='#');
             i++;
             if(i == curr_length && input_finished == false)
             {
@@ -128,6 +129,40 @@ int main(int argc, char *argv[]) {
                 input_finished = (message[curr_length - 1] == '$') ? true : false;
                 if(input_finished) rcv.terminate();
                 i = 0;
+            }
+            if(message[i] == '\r')
+            {
+                i++;
+                if(i == curr_length && input_finished == false)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                    while(curr_length == 0)
+                    {
+                        message = rcv.readIML();
+                        curr_length = message.length();
+                    }
+                    input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    if(input_finished) rcv.terminate();
+                    i = 0;
+                }
+            }
+            if(message[i] == '\n')
+            {
+                i++;
+                if(i == curr_length && input_finished == false)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                    while(curr_length == 0)
+                    {
+                        message = rcv.readIML();
+                        curr_length = message.length();
+                    }
+                    input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    if(input_finished) rcv.terminate();
+                    i = 0;
+                }
             }
 
             //Now finally processing
@@ -280,8 +315,56 @@ int main(int argc, char *argv[]) {
                     i = 0;
                 }
             }
+            assert(message[i]=='#');
             i++;
-            if(message[i]!='$') i++;
+            if(i == curr_length && input_finished == false)
+            {
+                message = rcv.readIML();
+                curr_length = message.length();
+                while(curr_length == 0)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                }
+                input_finished = (message[curr_length - 1] == '$') ? true : false;
+                if(input_finished) rcv.terminate();
+                i = 0;
+            }
+            if(message[i] == '\r')
+            {
+                i++;
+                if(i == curr_length && input_finished == false)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                    while(curr_length == 0)
+                    {
+                        message = rcv.readIML();
+                        curr_length = message.length();
+                    }
+                    input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    if(input_finished) rcv.terminate();
+                    i = 0;
+                }
+            }
+            if(message[i] == '\n')
+            {
+                i++;
+                if(i == curr_length && input_finished == false)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                    while(curr_length == 0)
+                    {
+                        message = rcv.readIML();
+                        curr_length = message.length();
+                    }
+                    input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    if(input_finished) rcv.terminate();
+                    i = 0;
+                }
+            }
+
             //separating input elements
             order_no++;
             int length = line.length();
@@ -474,6 +557,7 @@ int main(int argc, char *argv[]) {
                     i = 0;
                 }
             }
+            assert(message[i]=='#');
             i++;
             if(i == curr_length && input_finished == false)
             {
@@ -488,7 +572,40 @@ int main(int argc, char *argv[]) {
                 if(input_finished) rcv.terminate();
                 i = 0;
             }
-            if(message[i]!='$') i++;
+            if(message[i] == '\r')
+            {
+                i++;
+                if(i == curr_length && input_finished == false)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                    while(curr_length == 0)
+                    {
+                        message = rcv.readIML();
+                        curr_length = message.length();
+                    }
+                    input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    if(input_finished) rcv.terminate();
+                    i = 0;
+                }
+            }
+            if(message[i] == '\n')
+            {
+                i++;
+                if(i == curr_length && input_finished == false)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                    while(curr_length == 0)
+                    {
+                        message = rcv.readIML();
+                        curr_length = message.length();
+                    }
+                    input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    if(input_finished) rcv.terminate();
+                    i = 0;
+                }
+            }
             //separating input elements
             order_no++;
             int length = line.length();

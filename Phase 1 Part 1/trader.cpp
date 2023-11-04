@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
         //some pre-processing
         Stock_RBT* Stocks = new Stock_RBT[10000];
         calc_pre_computed_table();
-
+        cout<<message<<endl;
         //processing and outputs
         int i = 0;
         while(message[i]!='$')
@@ -77,6 +77,7 @@ int main(int argc, char *argv[]) {
                 input_finished = (message[curr_length - 1] == '$') ? true : false;
                 i = 0;
             }
+            assert(message[i]=='#');
             i++;
             if(i == curr_length && input_finished == false)
             {
@@ -84,6 +85,28 @@ int main(int argc, char *argv[]) {
                 curr_length = message.length();
                 input_finished = (message[curr_length - 1] == '$') ? true : false;
                 i = 0;
+            }
+            if(message[i] == '\r')
+            {
+                i++;
+                if(i == curr_length && input_finished == false)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                    input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    i = 0;
+                }
+            }
+            if(message[i] == '\n')
+            {
+                i++;
+                if(i == curr_length && input_finished == false)
+                {
+                    message = rcv.readIML();
+                    curr_length = message.length();
+                    input_finished = (message[curr_length - 1] == '$') ? true : false;
+                    i = 0;
+                }
             }
 
             //Now finally processing
