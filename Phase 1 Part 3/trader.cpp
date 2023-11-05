@@ -225,7 +225,7 @@ int main(int argc, char *argv[]) {
             }
             //Now printing
             if(cancelled == true)
-                cout<<"No Trade\n";
+                cout<<"No Trade"<<endl;
             else
             {
                 if(inserted_first_time)
@@ -242,7 +242,7 @@ int main(int argc, char *argv[]) {
                     if(stock_pointer->price_estimator < price)
                     {
                         stock_pointer->price_estimator = price;
-                        cout<<stock<<" "<<price<<" s\n";
+                        cout<<stock<<" "<<price<<" s"<<endl;
                         if(stock_pointer->no_best_sp == false && stock_pointer->best_selling_price == price)
                         {
                             stock_pointer->best_selling_price = -1;
@@ -257,7 +257,7 @@ int main(int argc, char *argv[]) {
                     if(stock_pointer->price_estimator > price)
                     {
                         stock_pointer->price_estimator = price;
-                        cout<<stock<<" "<<price<<" b\n";
+                        cout<<stock<<" "<<price<<" b"<<endl;
                         if(stock_pointer->no_best_bp == false && stock_pointer->best_buying_price == price)
                         {
                             stock_pointer->best_buying_price = -1;
@@ -465,7 +465,7 @@ int main(int argc, char *argv[]) {
             }
             if(cancelled==true)
             {
-                cout<<"No Trade\n";
+                cout<<"No Trade"<<endl;
             }
             else
             {
@@ -474,7 +474,7 @@ int main(int argc, char *argv[]) {
                 Graph->find_max_arbitrage(curr_order, max_arbitrage_lane, max_profit);
                 if(max_arbitrage_lane.size()==0)
                 {
-                    cout<<"No Trade\n";
+                    cout<<"No Trade"<<endl;
                 }
                 else
                 {
