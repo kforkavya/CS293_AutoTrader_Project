@@ -627,6 +627,7 @@ int main(int argc, char *argv[]) {
             vector<pair<string, int>> tokenised_string;
             string sorted_stock_structure;
             stock_structure_disintegrator(stock_structure, tokenised_string, sorted_stock_structure);
+            sorted_stock_structure += " "+price_order_string;
             //cout<<"Sorted Stock = "<<sorted_stock_structure<<" Price = "<<price_order<<" Quantity = "<<quantity_order<<" Tag = "<<tag<<endl;
             bool cancelled = false, inserted_first_time = false;
             int hash = hashValue(sorted_stock_structure);
