@@ -677,7 +677,7 @@ int main(int argc, char *argv[]) {
             }
             if(cancelled==true)
             {
-                cout<<"Cancelled\n";
+                //cout<<"Cancelled\n";
                 cout<<"No Trade"<<endl;
             }
             else
