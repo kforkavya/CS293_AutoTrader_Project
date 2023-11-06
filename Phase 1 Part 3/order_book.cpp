@@ -27,35 +27,6 @@ struct order_book_node
 
 typedef order_book_node* order_book_ptr;
 
-bool isRightChild(order_book_ptr y)
-{
-  return (y->parent!=NULL)&&(y->parent->right==y);
-}
-
-bool isLeftChild(order_book_ptr y)
-{
-  return (y->parent!=NULL)&&(y->parent->left==y);
-}
-
-bool isSibling(order_book_ptr y)
-{
-    return (y->parent!=NULL)&&(y->parent->left!=NULL&&y->parent->right!=NULL);
-}
-
-int Sibling(order_book_ptr y)
-{
-    if(isSibling(y))
-        if(isRightChild(y)) return y->parent->left->color;
-        else if(isLeftChild(y)) return y->parent->right->color;
-    return -1;
-}
-
-bool isSiblingRed(order_book_ptr y)
-{
-    if(isSibling(y)&&Sibling(y)==1) return true;
-    return false;
-}
-
 class Order_Book_RBT {
    private:
   order_book_ptr root;
@@ -409,6 +380,7 @@ void insertFix(order_book_ptr k) {
             temp->left = newNodePtr;
             fixup(newNodePtr);
             thisnode = newNodePtr;
+            return;
         }
         else if(temp->identity_string < key && temp->right==TNULL)
         {
@@ -420,6 +392,7 @@ void insertFix(order_book_ptr k) {
             temp->right = newNodePtr;
             fixup(newNodePtr);
             thisnode = newNodePtr;
+            return;
         }
     }
     //if code reaches here, it means root itself was null
@@ -502,7 +475,7 @@ void rightrotate(order_book_ptr loc)
     if(p->parent==NULL) root=loc; else if(isRightChild(p)) p->parent->right=loc; else p->parent->left=loc;
     p->parent=loc;
     p->left=loc->right;
-    if(loc->right!=NULL) loc->right->parent=p;
+    if(loc->right!=TNULL) loc->right->parent=p;
     loc->right=p;
 }
 
@@ -513,8 +486,36 @@ void leftrotate(order_book_ptr loc)
     if(p->parent==NULL) root=loc; else if(isRightChild(p)) p->parent->right=loc; else p->parent->left=loc;
     p->parent=loc;
     p->right=loc->left;
-    if(loc->left!=NULL) loc->left->parent=p;
+    if(loc->left!=TNULL) loc->left->parent=p;
     loc->left=p;
+}
+bool isRightChild(order_book_ptr y)
+{
+  return (y->parent!=NULL)&&(y->parent->right==y);
+}
+
+bool isLeftChild(order_book_ptr y)
+{
+  return (y->parent!=NULL)&&(y->parent->left==y);
+}
+
+bool isSibling(order_book_ptr y)
+{
+    return (y->parent!=NULL)&&(y->parent->left!=NULL&&y->parent->right!=NULL);
+}
+
+int Sibling(order_book_ptr y)
+{
+    if(isSibling(y))
+        if(isRightChild(y)) return y->parent->left->color;
+        else if(isLeftChild(y)) return y->parent->right->color;
+    return -1;
+}
+
+bool isSiblingRed(order_book_ptr y)
+{
+    if(isSibling(y)&&Sibling(y)==1) return true;
+    return false;
 }
 };
 

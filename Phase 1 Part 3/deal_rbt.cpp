@@ -3,35 +3,6 @@
 #include <iostream>
 using namespace std;
 
-bool isRightChild(deal_ptr y)
-{
-  return (y->parent!=NULL)&&(y->parent->right==y);
-}
-
-bool isLeftChild(deal_ptr y)
-{
-  return (y->parent!=NULL)&&(y->parent->left==y);
-}
-
-bool isSibling(deal_ptr y)
-{
-    return (y->parent!=NULL)&&(y->parent->left!=NULL&&y->parent->right!=NULL);
-}
-
-int Sibling(deal_ptr y)
-{
-    if(isSibling(y))
-        if(isRightChild(y)) return y->parent->left->color;
-        else if(isLeftChild(y)) return y->parent->right->color;
-    return -1;
-}
-
-bool isSiblingRed(deal_ptr y)
-{
-    if(isSibling(y)&&Sibling(y)==1) return true;
-    return false;
-}
-
 class Deal_RBT {
    private:
   deal_ptr root;
@@ -360,7 +331,7 @@ void insertFix(deal_ptr k) {
   }
 
   // Inserting a node
-  void access(string key, deal_ptr& thisnode, bool& inserted_first_time, string stock_structure, vector<pair<string, int>> tokenised_string, int price) 
+  void access(string key, deal_ptr& thisnode, bool& inserted_first_time, string stock_structure, vector<pair<string, int> > tokenised_string, int price) 
   {
     deal_ptr temp = root;
     while(temp != TNULL)
@@ -383,8 +354,11 @@ void insertFix(deal_ptr k) {
             newNodePtr->right = TNULL;
             newNodePtr->parent = temp;
             temp->left = newNodePtr;
+            //cout<<"Before fixing :-"<<endl;
+            //printTree();
             fixup(newNodePtr);
             thisnode = newNodePtr;
+            return;
         }
         else if(temp->deal_string < key && temp->right==TNULL)
         {
@@ -396,6 +370,7 @@ void insertFix(deal_ptr k) {
             temp->right = newNodePtr;
             fixup(newNodePtr);
             thisnode = newNodePtr;
+            return;
         }
     }
     //if code reaches here, it means root itself was null
@@ -478,7 +453,7 @@ void rightrotate(deal_ptr loc)
     if(p->parent==NULL) root=loc; else if(isRightChild(p)) p->parent->right=loc; else p->parent->left=loc;
     p->parent=loc;
     p->left=loc->right;
-    if(loc->right!=NULL) loc->right->parent=p;
+    if(loc->right!=TNULL) loc->right->parent=p;
     loc->right=p;
 }
 
@@ -489,7 +464,64 @@ void leftrotate(deal_ptr loc)
     if(p->parent==NULL) root=loc; else if(isRightChild(p)) p->parent->right=loc; else p->parent->left=loc;
     p->parent=loc;
     p->right=loc->left;
-    if(loc->left!=NULL) loc->left->parent=p;
+    if(loc->left!=TNULL) loc->left->parent=p;
     loc->left=p;
 }
+bool isRightChild(deal_ptr y)
+{
+  return (y->parent!=NULL)&&(y->parent->right==y);
+}
+
+bool isLeftChild(deal_ptr y)
+{
+  return (y->parent!=NULL)&&(y->parent->left==y);
+}
+
+bool isSibling(deal_ptr y)
+{
+    return (y->parent!=NULL)&&(y->parent->left!=TNULL&&y->parent->right!=TNULL);
+}
+
+int Sibling(deal_ptr y)
+{
+    if(isSibling(y))
+        if(isRightChild(y)) return y->parent->left->color;
+        else if(isLeftChild(y)) return y->parent->right->color;
+    return -1;
+}
+
+bool isSiblingRed(deal_ptr y)
+{
+    if(isSibling(y)&&Sibling(y)==1) return true;
+    return false;
+}
 };
+
+/*int main()
+{
+  Deal_RBT hey;
+  deal_ptr temp, temp4;
+  vector<pair<string, int> > temp3;
+  bool temp2;
+  hey.access("1", temp, temp2, " ", temp3, 0);
+  hey.access("2", temp, temp2, " ", temp3, 0);
+  hey.access("3", temp, temp2, " ", temp3, 0);
+  hey.access("4", temp, temp2, " ", temp3, 0);
+  hey.access("5", temp, temp2, " ", temp3, 0);
+  hey.access("6", temp4, temp2, " ", temp3, 0);
+  hey.access("7", temp, temp2, " ", temp3, 0);
+  hey.access("8", temp, temp2, " ", temp3, 0);
+  hey.access("9", temp, temp2, " ", temp3, 0);
+  hey.access("90", temp, temp2, " ", temp3, 0);
+  cout<<"Printing Tree :-"<<endl;
+  hey.printTree();
+  hey.deleteNode(temp4);
+  cout<<"Deleting :-"<<endl;
+  hey.printTree();
+  hey.deleteNode(temp);
+  cout<<"Deleting :-"<<endl;
+  hey.printTree();
+  hey.access("90", temp, temp2, " ", temp3, 0);
+  cout<<"Printing Tree :-"<<endl;
+  hey.printTree();
+}*/
