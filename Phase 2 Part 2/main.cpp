@@ -8,9 +8,7 @@
 #include <vector>
 #include <pthread.h>
 #include "market.h"
-#include <fstream>
 
-std::ifstream inputFile("output.txt");
 
 int NUM_THREADS = 2; // Number of worker threads
 extern const int NUM_STEPS;  // Number of time steps
@@ -23,49 +21,8 @@ std::mutex printMutex; // Mutex for thread-exclusive printing
 extern void* workerThread(void* arg);
 extern int reader(int time);
 extern int trader(std::string* message);
-
-void* userThread(void* arg)
-{
-    int thread_id = *(int*)arg;
-    while(true)
-    {
-        int currentTime;
-        {
-            currentTime = commonTimer.load();
-        }
-        int end = reader(currentTime);
-        if (end) break;
-    }
-    return NULL;
-}
-
-void* userTrader(void* arg)
-{
-    std::string inputFilepath = "output.txt";
-    std::ifstream inputFile(inputFilepath);
-    std::string line;
-
-    while (true)
-    {
-        std::unique_lock<std::mutex> lock(printMutex);
-        if (!std::getline(inputFile, line)) {
-            // End of file, exit the loop
-            break;
-        }
-        lock.unlock();
-
-        int currentTime = commonTimer.fetch_add(1);
-        std::string message;
-        int valid = trader(&message);
-
-        if (valid) {
-            std::lock_guard<std::mutex> printLock(printMutex);
-            std::cout << currentTime << " " << line << std::endl;
-        }
-    }
-
-    return NULL;
-}
+extern void* userThread(void* arg);
+extern void* userTrader(void* arg);
 
 int main(int argc, char** argv) {
     std::cout << "TL" << std::endl;
@@ -83,7 +40,7 @@ int main(int argc, char** argv) {
     }
 
     pthread_t clientThread;
-    if (pthread_create(&clientThread, NULL, &userTrader,(void*) &NUM_THREADS) != 0) {
+    if (pthread_create(&clientThread, NULL, &userThread,(void*) &NUM_THREADS) != 0) {
         perror("Thread creation error");
     }
     clientThreads.push_back(clientThread);

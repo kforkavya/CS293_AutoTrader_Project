@@ -599,13 +599,16 @@ class New_Graph_List {
             while(iterator != NULL)
             {
                 //cout<<"Here"<<endl;
+                //cout << iterator->identity_string << endl;
                 order_pointer->adjacent_nodes.push_back(make_pair(iterator->order_no, iterator));
                 //cout<<"Here2"<<endl;
                 iterator=iterator->next;
             }
             tail->next = order_pointer;
             order_pointer->prev = tail;
+            order_pointer->next = NULL;
             tail = order_pointer;
+            //cout << "Inserted Successfully" << endl;
         }
     }
 
@@ -641,6 +644,7 @@ class New_Graph_List {
         }
         temp->next->prev = temp->prev;
         temp->prev->next = temp->next;
+        temp->prev = temp->next = NULL;
     }
 
     void delete_adjacent_node(order_book_ptr thisnode, int order_no_to_be_deleted)

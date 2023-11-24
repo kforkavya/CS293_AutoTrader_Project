@@ -1,6 +1,6 @@
-X 1 Y -1 -10 b#
-Y -1 Z 1 25 s#
-C 1 A -1 10 b#
-Z -1 W 1 25 s#
-C 1 A -1 -450 s#
-AALU 1 BHINDI -1 -10 b#
+Y 1 Z -1 -15 b#
+Z 1 X -1 5 b#
+Z 1 X -1 10 b#
+Z -1 X 1 20 s#
+X 1 Y -1 10 b#
+X 1 Z -1 20 b#

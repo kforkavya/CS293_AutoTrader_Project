@@ -2,10 +2,6 @@
 
 
 #include <string>
-#include <fstream>
-#include <iostream>
-#include <queue>
-using namespace std;
 
 int reader(int time)
 {
@@ -14,6 +10,15 @@ int reader(int time)
 
 int trader(std::string *message)
 {
-    *message = "Z";
     return 1;
+}
+
+void* userThread(void* arg)
+{
+    return nullptr;
+}
+
+void* userTrader(void* arg)
+{
+    return nullptr;
 }

@@ -6,7 +6,7 @@ using namespace std;
 struct deal_node
 {
   std::string deal_string; // Deal String
-  vector<pair<string, int>> tokenised_string;
+  vector<pair<string, int> > tokenised_string;
   int price; //Price for that deal
   int best_selling_price; //Best Selling Price
   bool no_best_sp;
@@ -19,7 +19,7 @@ struct deal_node
   deal_node* right; // right-child
   deal_node* left; // left child
   deal_node() {}
-  deal_node(std::string key, vector<pair<string, int>> tokenised_string, int price_deal): deal_string(key), price(price_deal), tokenised_string(tokenised_string), best_selling_price(-1.0), no_best_sp(true), best_sp_pointer(NULL), best_buying_price(-1.0), no_best_bp(true), best_bp_pointer(NULL), color(1), parent(nullptr), right(nullptr), left(nullptr) {}
+  deal_node(std::string key, vector<pair<string, int> > tokenised_string, int price_deal): deal_string(key), price(price_deal), tokenised_string(tokenised_string), best_selling_price(-1.0), no_best_sp(true), best_sp_pointer(NULL), best_buying_price(-1.0), no_best_bp(true), best_bp_pointer(NULL), color(1), parent(nullptr), right(nullptr), left(nullptr) {}
 };
 
 typedef deal_node* deal_ptr;
@@ -31,7 +31,7 @@ struct GraphNode{
     char tag;
     int price;
     int hash;
-    vector<pair<int, GraphNode*>> adjacent_nodes;
+    vector<pair<int, GraphNode*> > adjacent_nodes;
     GraphNode* prev;
     GraphNode* next;
     GraphNode() {}
@@ -43,7 +43,7 @@ typedef GraphNode *graph_ptr;
 struct PathNode{
     vector<graph_ptr> path;
     int profit_till_now;
-    vector<pair<string, int>> stock_structure;
+    vector<pair<string, int> > stock_structure;
     int zeroes;
     PathNode(): profit_till_now(0), zeroes(0) {}
     PathNode(PathNode* prev_path)
@@ -135,6 +135,7 @@ class Graph_List {
             }
             tail->next = temp;
             temp->prev = tail;
+            temp->next = NULL;
             tail = temp;
         }
         return temp;
@@ -172,6 +173,7 @@ class Graph_List {
         }
         temp->next->prev = temp->prev;
         temp->prev->next = temp->next;
+        temp->prev = temp->next = NULL;
         free(thisnode);
     }
 
@@ -209,7 +211,7 @@ class Graph_List {
     void find_max_arbitrage(graph_ptr top_graph_ptr, vector<graph_ptr>& max_arbitrage_lane, int& max_profit)
     {
         max_profit = 0;
-        vector<pair<path_ptr, graph_ptr>> my_stack;
+        vector<pair<path_ptr, graph_ptr> > my_stack;
         path_ptr temp = new PathNode();
         my_stack.push_back(make_pair(temp, top_graph_ptr));
         while(my_stack.size() > 0)
