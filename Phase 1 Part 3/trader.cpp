@@ -624,7 +624,7 @@ int main(int argc, char *argv[]) {
             string stock_structure = line.substr(0, first_space_index);
             //cout<<line<<endl;
             //finally processing
-            vector<pair<string, int>> tokenised_string;
+            vector<pair<string, int> > tokenised_string;
             string sorted_stock_structure;
             stock_structure_disintegrator(stock_structure, tokenised_string, sorted_stock_structure);
             sorted_stock_structure += " "+price_order_string;
@@ -632,47 +632,58 @@ int main(int argc, char *argv[]) {
             bool cancelled = false, inserted_first_time = false;
             int hash = hashValue(sorted_stock_structure);
             order_book_ptr order_pointer;
-            Orders[hash].access(sorted_stock_structure, order_pointer, inserted_first_time, stock_structure, tokenised_string, price_order, quantity_order, tag, order_no, hash);
-            if(inserted_first_time == true)
+            Orders[hash].access(sorted_stock_structure, order_pointer, inserted_first_time, tokenised_string, price_order, hash);
+            order_graph_ptr graph_node = new order_graph_node(order_pointer, tag, quantity_order, order_no, stock_structure);
+            if(inserted_first_time == true || order_pointer->order_list.size() == 0)
             {
                 //cout<<"Hey"<<endl;
-                Graph->insert_order_in_graph(order_pointer);
+                order_pointer->tag = tag;
+                order_pointer->order_list.push_back({order_no, graph_node});
+                Graph->insert_order_in_graph(graph_node);
             }
             else
             {
                 if(tag == order_pointer->tag)
                 {
                     //cout<<"Over here\n";
-                    order_pointer->quantity += quantity_order;
-                    //cout<<"This much done"<<endl;
-                    Graph->delete_order_from_graph(order_pointer);
-                    //cout<<"Deletion done"<<endl;
-                    order_pointer->order_no = order_no;
-                    Graph->insert_order_in_graph(order_pointer);
+                    order_pointer->order_list.push_back({order_no, graph_node});
+                    Graph->insert_order_in_graph(graph_node);
                     //cout<<"Insertion Done"<<endl;
                 }
                 else
                 {
-                    if(order_pointer->quantity > quantity_order)
+                    while(order_pointer->order_list.size()>0)
                     {
-                        order_pointer->quantity -= quantity_order;
-                        order_pointer->order_no = order_no;
-                        cancelled = true; //No Checks for Arbitrage
+                        int n = order_pointer->order_list.size();
+                        if(order_pointer->order_list[n-1].second->quantity > graph_node->quantity)
+                        {
+                            order_pointer->order_list[n-1].second->quantity -= graph_node->quantity;
+                            cancelled = true;
+                            delete graph_node;
+                            graph_node = NULL;
+                            break;
+                        }
+                        else if(order_pointer->order_list[n-1].second->quantity < graph_node->quantity)
+                        {
+                            graph_node->quantity -= order_pointer->order_list[n-1].second->quantity;
+                            Graph->delete_order_from_graph(order_pointer->order_list[n-1].second);
+                            order_pointer->order_list.pop_back();
+                        }
+                        else
+                        {
+                            Graph->delete_order_from_graph(order_pointer->order_list[n-1].second);
+                            order_pointer->order_list.pop_back();
+                            cancelled = true;
+                            delete graph_node;
+                            graph_node = NULL;
+                            break;
+                        }
                     }
-                    else if(order_pointer->quantity < quantity_order)
+                    if(order_pointer->order_list.size() == 0 && cancelled == false)
                     {
                         order_pointer->tag = tag;
-                        order_pointer->quantity = quantity_order - order_pointer->quantity;
-                        order_pointer->actual_stock_structure = stock_structure;
-                        order_pointer->order_no = order_no;
-                        Graph->delete_order_from_graph(order_pointer);
-                        Graph->insert_order_in_graph(order_pointer);
-                    }
-                    else
-                    {
-                        Graph->delete_order_from_graph(order_pointer);
-                        Orders[hash].deleteNode(order_pointer);
-                        cancelled = true; //No Checks for Arbitrage
+                        order_pointer->order_list.push_back({order_no, graph_node});
+                        Graph->insert_order_in_graph(graph_node);
                     }
                 }
             }
@@ -683,8 +694,8 @@ int main(int argc, char *argv[]) {
             }
             else
             {
-                vector<pair<order_book_ptr, int> > max_arbitrage_lane; int max_profit;
-                Graph->find_max_arbitrage(order_pointer, max_arbitrage_lane, max_profit);
+                vector<pair<order_graph_ptr, int> > max_arbitrage_lane; int max_profit;
+                Graph->find_max_arbitrage(graph_node, max_arbitrage_lane, max_profit);
                 //cout<<"Here ?"<<endl;
                 if(max_arbitrage_lane.size()==0)
                 {
@@ -695,10 +706,11 @@ int main(int argc, char *argv[]) {
                     //cout<<"Arbitrage Found !"<<endl;
                     for(int i = 0; i<max_arbitrage_lane.size(); i++)
                     {
-                        cout<<max_arbitrage_lane[i].first->actual_stock_structure<<" "<<max_arbitrage_lane[i].first->price<<" "<<max_arbitrage_lane[i].second<<" ";
+                        //cout<<"Order = "<<max_arbitrage_lane[i].first->order_no<<" "<<max_arbitrage_lane[i].first->actual_stock_structure<<" "<<max_arbitrage_lane[i].first->stock_ptr->price<<" "<<max_arbitrage_lane[i].second<<" ";
+                        cout<<max_arbitrage_lane[i].first->actual_stock_structure<<" "<<max_arbitrage_lane[i].first->stock_ptr->price<<" "<<max_arbitrage_lane[i].second<<" ";
                         cout<<(max_arbitrage_lane[i].first->tag == 's' ? 'b' : 's')<<endl;
                         char tag = max_arbitrage_lane[i].first->tag;
-                        int hash = max_arbitrage_lane[i].first->hash;
+                        int hash = max_arbitrage_lane[i].first->stock_ptr->hash;
                         int quantity_order = max_arbitrage_lane[i].first->quantity;
                         if(max_arbitrage_lane[i].second < quantity_order)
                             max_arbitrage_lane[i].first->quantity = quantity_order - max_arbitrage_lane[i].second;
@@ -707,7 +719,20 @@ int main(int argc, char *argv[]) {
                             //cout<<"Deleting..."<<endl;
                             Graph->delete_order_from_graph(max_arbitrage_lane[i].first);
                             //cout<<"Step 1 Done"<<endl;
-                            Orders[hash].deleteNode(max_arbitrage_lane[i].first);
+                            int l = 0, u = max_arbitrage_lane[i].first->stock_ptr->order_list.size()-1, m = -1;
+                            int order_no_to_be_deleted = max_arbitrage_lane[i].first->order_no;
+                            while(l<=u)
+                            {
+                                m = (l+u)/2;
+                                if(max_arbitrage_lane[i].first->stock_ptr->order_list[m].first==order_no_to_be_deleted)
+                                    break;
+                                else if(max_arbitrage_lane[i].first->stock_ptr->order_list[m].first<order_no_to_be_deleted)
+                                    l = m+1;
+                                else
+                                    u = m-1;
+                            }
+                            //now delete from adjacency vector
+                            max_arbitrage_lane[i].first->stock_ptr->order_list.erase(max_arbitrage_lane[i].first->stock_ptr->order_list.begin() + m);
                             //cout<<"Completed"<<endl;
                         }
                     }

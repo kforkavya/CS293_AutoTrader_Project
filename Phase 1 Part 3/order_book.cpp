@@ -3,26 +3,36 @@
 #include<iostream>
 using namespace std;
 
+struct order_graph_node
+{
+  struct order_book_node* stock_ptr;
+  string actual_stock_structure;
+  char tag;
+  int quantity;
+  int order_no;
+  vector<pair<int, order_graph_node*> > adjacent_nodes;
+  order_graph_node* prev;
+  order_graph_node* next;
+  order_graph_node(order_book_node* stock_ptr, char tag, int quantity, int order_no, string key) : stock_ptr(stock_ptr), tag(tag), quantity(quantity), order_no(order_no), actual_stock_structure(key) {}
+};
+
+typedef order_graph_node* order_graph_ptr;
+
 struct order_book_node
 {
   std::string identity_string; // String that helps me in searching where this node lies in the RBT
   // It is basically Sorted Stock Structure concatenated with price in it.
-  std::string actual_stock_structure; // String that stores the actual structure of the stocks with price excluded
   vector<pair<string, int>> tokenised_string;
   int price; // Price for that order
-  int quantity; // No. of such orders placed
-  int order_no; // Order Number
   int hash; // Original Hash
-  vector<pair<int, order_book_node*>> adjacent_nodes; // Graph Adjacent Nodes
+  vector<pair<int, order_graph_node*> > order_list; // List of Orders
   char tag; // Character for 's' or 'b' tag
   int color; // 1-red, 0-black
   order_book_node* parent; // parent in RBT
   order_book_node* right; // right-child in RBT
   order_book_node* left; // left child in RBT
-  order_book_node* prev; // Previous in Vertex List of Graph
-  order_book_node* next; // Next in Vertex List of Graph
   order_book_node() {}
-  order_book_node(string key, string stock_structure, vector<pair<string, int>> tokenised_string, int price, int quantity, char tag, int order_no, int hash): identity_string(key), actual_stock_structure(stock_structure), tokenised_string(tokenised_string), price(price), quantity(quantity), tag(tag), parent(NULL), color(1), prev(NULL), next(NULL), order_no(order_no), hash(hash) {}
+  order_book_node(string key, vector<pair<string, int>> tokenised_string, int price, int hash): identity_string(key), tokenised_string(tokenised_string), price(price), parent(NULL), color(1), hash(hash) {}
 };
 
 typedef order_book_node* order_book_ptr;
@@ -355,7 +365,7 @@ void insertFix(order_book_ptr k) {
   }
 
   // Inserting a node
-  void access(string key, order_book_ptr& thisnode, bool& inserted_first_time, string stock_structure, vector<pair<string, int>> tokenised_string, int price, int quantity, char tag, int order_no, int hash) 
+  void access(string key, order_book_ptr& thisnode, bool& inserted_first_time, vector<pair<string, int>> tokenised_string, int price, int hash) 
   {
     order_book_ptr temp = root;
     while(temp != TNULL)
@@ -373,7 +383,7 @@ void insertFix(order_book_ptr k) {
         else if(temp->identity_string > key && temp->left==TNULL)
         {
             inserted_first_time = true;
-            order_book_ptr newNodePtr = new order_book_node(key, stock_structure, tokenised_string, price, quantity, tag, order_no, hash);
+            order_book_ptr newNodePtr = new order_book_node(key, tokenised_string, price, hash);
             newNodePtr->left = TNULL;
             newNodePtr->right = TNULL;
             newNodePtr->parent = temp;
@@ -385,7 +395,7 @@ void insertFix(order_book_ptr k) {
         else if(temp->identity_string < key && temp->right==TNULL)
         {
             inserted_first_time = true;
-            order_book_ptr newNodePtr = new order_book_node(key, stock_structure, tokenised_string, price, quantity, tag, order_no, hash);
+            order_book_ptr newNodePtr = new order_book_node(key, tokenised_string, price, hash);
             newNodePtr->left = TNULL;
             newNodePtr->right = TNULL;
             newNodePtr->parent = temp;
@@ -396,7 +406,7 @@ void insertFix(order_book_ptr k) {
         }
     }
     //if code reaches here, it means root itself was null
-    root = new order_book_node(key, stock_structure, tokenised_string, price, quantity, tag, order_no, hash);
+    root = new order_book_node(key, tokenised_string, price, hash);
     root->left = TNULL;
     root->right = TNULL;
     inserted_first_time = true;
@@ -520,7 +530,7 @@ bool isSiblingRed(order_book_ptr y)
 };
 
 struct NewPathNode{
-    vector<pair<order_book_ptr, int> > path;
+    vector<pair<order_graph_ptr, int> > path;
     int profit_till_now;
     vector<pair<string, int>> stock_structure;
     int zeroes;
@@ -532,29 +542,29 @@ struct NewPathNode{
         this->stock_structure = prev_path->stock_structure;
         this->zeroes = prev_path->zeroes;
     }
-    NewPathNode(NewPathNode* prev_path, order_book_ptr node, int quantity)
+    NewPathNode(NewPathNode* prev_path, order_graph_ptr node, int quantity)
     {
         this->path = prev_path->path;
         this->path.push_back({node, quantity});
         this->zeroes = prev_path->zeroes;
         int l1 = prev_path->stock_structure.size();
-        int l2 = node->tokenised_string.size();
+        int l2 = node->stock_ptr->tokenised_string.size();
         int c1 = 0, c2 = 0;
         while(c1<l1 && c2<l2)
         {
-            if(prev_path->stock_structure[c1].first < node->tokenised_string[c2].first)
+            if(prev_path->stock_structure[c1].first < node->stock_ptr->tokenised_string[c2].first)
             {
                 this->stock_structure.push_back(prev_path->stock_structure[c1]);
                 c1++;
             }
-            else if(prev_path->stock_structure[c1].first > node->tokenised_string[c2].first)
+            else if(prev_path->stock_structure[c1].first > node->stock_ptr->tokenised_string[c2].first)
             {
-                this->stock_structure.push_back(make_pair(node->tokenised_string[c2].first, quantity*(node->tag=='s'? 1 : -1)*node->tokenised_string[c2].second));
+                this->stock_structure.push_back(make_pair(node->stock_ptr->tokenised_string[c2].first, quantity*(node->tag=='s'? 1 : -1)*node->stock_ptr->tokenised_string[c2].second));
                 c2++;
             }
             else
             {
-                int new_quantity = prev_path->stock_structure[c1].second + quantity*(node->tag == 's' ? 1 : -1)*node->tokenised_string[c2].second;
+                int new_quantity = prev_path->stock_structure[c1].second + quantity*(node->tag == 's' ? 1 : -1)*node->stock_ptr->tokenised_string[c2].second;
                 if(prev_path->stock_structure[c1].second==0) this->zeroes--;
                 else if(new_quantity==0) this->zeroes++;
                 this->stock_structure.push_back(make_pair(prev_path->stock_structure[c1].first, new_quantity));
@@ -565,10 +575,10 @@ struct NewPathNode{
             this->stock_structure.push_back(prev_path->stock_structure[c1++]);
         while(c2<l2)
         {
-            this->stock_structure.push_back(make_pair(node->tokenised_string[c2].first, quantity*(node->tag=='s'? 1 : -1)*node->tokenised_string[c2].second));
+            this->stock_structure.push_back(make_pair(node->stock_ptr->tokenised_string[c2].first, quantity*(node->tag=='s'? 1 : -1)*node->stock_ptr->tokenised_string[c2].second));
             c2++;
         }
-        this->profit_till_now = prev_path->profit_till_now + quantity*(node->tag == 'b' ? 1 : -1)*node->price;
+        this->profit_till_now = prev_path->profit_till_now + quantity*(node->tag == 'b' ? 1 : -1)*node->stock_ptr->price;
     }
 };
 
@@ -576,9 +586,9 @@ typedef NewPathNode *new_path_ptr;
 
 class New_Graph_List {
     private:
-    order_book_ptr root;
+    order_graph_ptr root;
     public:
-    order_book_ptr tail;
+    order_graph_ptr tail;
 
     public:
     New_Graph_List()
@@ -587,7 +597,7 @@ class New_Graph_List {
         tail=NULL;
     }
 
-    void insert_order_in_graph(order_book_ptr order_pointer)
+    void insert_order_in_graph(order_graph_ptr order_pointer)
     {
         if(root==NULL)
         {
@@ -595,7 +605,7 @@ class New_Graph_List {
         }
         else
         {
-            order_book_ptr iterator = root;
+            order_graph_ptr iterator = root;
             while(iterator != NULL)
             {
                 //cout<<"Here"<<endl;
@@ -612,10 +622,10 @@ class New_Graph_List {
         }
     }
 
-    void delete_order_from_graph(order_book_ptr thisnode)
+    void delete_order_from_graph(order_graph_ptr thisnode)
     {
         int order_no = thisnode->order_no;
-        order_book_node* temp = tail;
+        order_graph_node* temp = tail;
         while(temp!=NULL&&temp->order_no > order_no)
         {
             delete_adjacent_node(temp, order_no);
@@ -647,7 +657,7 @@ class New_Graph_List {
         temp->prev = temp->next = NULL;
     }
 
-    void delete_adjacent_node(order_book_ptr thisnode, int order_no_to_be_deleted)
+    void delete_adjacent_node(order_graph_ptr thisnode, int order_no_to_be_deleted)
     {
         int l = 0, u = thisnode->adjacent_nodes.size()-1, m = -1;
         while(l<=u)
@@ -665,18 +675,18 @@ class New_Graph_List {
         thisnode->adjacent_nodes.erase(thisnode->adjacent_nodes.begin() + m);
     }
 
-    void find_max_arbitrage(order_book_ptr top_order_book_ptr, vector<pair<order_book_ptr, int> >& max_arbitrage_lane, int& max_profit)
+    void find_max_arbitrage(order_graph_ptr top_order_book_ptr, vector<pair<order_graph_ptr, int> >& max_arbitrage_lane, int& max_profit)
     {
         max_profit = 0;
-        vector<pair<new_path_ptr, pair<order_book_ptr, int>>> my_stack;
+        vector<pair<new_path_ptr, pair<order_graph_ptr, int>>> my_stack;
         new_path_ptr temp = new NewPathNode();
         my_stack.push_back({temp, {top_order_book_ptr, top_order_book_ptr->quantity}});
         while(my_stack.size() > 0)
         {
             new_path_ptr prev_path = my_stack[my_stack.size()-1].first;
-            order_book_ptr curr_node = my_stack[my_stack.size()-1].second.first;
+            order_graph_ptr curr_node = my_stack[my_stack.size()-1].second.first;
             int curr_quantity = my_stack[my_stack.size()-1].second.second;
-            //cout<<"Stock = "<<curr_node->actual_stock_structure<<" Price = "<<curr_node->price<<" Quantity = "<<curr_quantity<<" Tag = "<<curr_node->tag<<endl;
+            //cout<<"Stock = "<<curr_node->actual_stock_structure<<" Price = "<<curr_node->stock_ptr->price<<" Quantity = "<<curr_quantity<<" Tag = "<<curr_node->tag<<endl;
             //cout<<my_stack.size()<<endl;
             new_path_ptr curr_path = new NewPathNode(prev_path, curr_node, curr_quantity);
             my_stack.pop_back();
@@ -685,6 +695,7 @@ class New_Graph_List {
             {
                 if(curr_path->profit_till_now > max_profit)
                 {
+                    //cout << "Max Arbitrage Found !" << endl;
                     max_arbitrage_lane = curr_path->path;
                     max_profit = curr_path->profit_till_now;
                 }
@@ -695,7 +706,7 @@ class New_Graph_List {
                 free(prev_path);
             if(curr_quantity - 1 >= 0)
             {
-                for(int i = curr_node->adjacent_nodes.size()-1; i>=0; i--)
+                for(int i = 0; i<curr_node->adjacent_nodes.size(); i++)
                 {
                     new_path_ptr temp = new NewPathNode(curr_path);
                     my_stack.push_back({temp, {curr_node->adjacent_nodes[i].second, curr_node->adjacent_nodes[i].second->quantity}});
