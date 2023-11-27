@@ -1,8 +1,9 @@
-#include "market.h"
 #include "stock_rbt.cpp"
 #include "client_rbt.cpp"
 #include "simple_rbt.cpp"
 #include "trade_heap.cpp"
+
+#include "market.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -21,6 +22,7 @@ vector<Stock_RBT> table(5000);
 int Money_Transfered = 0;
 int Completed_Trade = 0;
 int Shares_Traded = 0;
+int line_tec = 0;
 vector<Client_RBT> table_client(5000);
 
 C_RBT client_store;
@@ -191,6 +193,8 @@ void do_sth(){
 
 void string_process(const std::string& s) {
 
+    line_tec +=1;
+
     std::string input = s;
     std::vector<std::string> words;
 
@@ -218,6 +222,8 @@ void string_process(const std::string& s) {
     string brokername = words[1];
     bool b69 = false;
     node_client_names* ddgauywg = client_store.access(brokername,b69); // broker exist karga then wanna ... wanna uska node ban jaye ga
+    bool bxxx = false;
+    node_c* pxxx = table_client[hash_key(brokername)].access(brokername,bxxx); // buyer
     string SB = words[2];
 
     string stock_ = words[3];
@@ -266,7 +272,7 @@ void string_process(const std::string& s) {
     if(SB == "BUY") b = true;
         else b = false;
 
-    Trade_* trade_pointer = new Trade_(b , price , quantity , start , timing + start , brokername);
+    Trade_* trade_pointer = new Trade_(b , price , quantity , start , timing + start , brokername , line_tec);
 
     //cout<<trade_pointer->quantity<<endl;
 

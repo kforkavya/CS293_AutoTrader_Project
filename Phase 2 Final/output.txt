@@ -1,0 +1,153 @@
+TL
+0 GS BUY AMZN $218 #2 2
+1 AA SELL NFLX $469 #5 2
+1 KG BUY AAPL $118 #12 14
+1 AA SELL AAPL $88 #5 0
+1 GS BUY AMZN $92 #8 18
+1 SV BUY AMZN $407 #11 18
+2 AA BUY GE $157 #14 -1
+2 AA SELL AMD $70 #14 4
+2 GS SELL GE $165 #6 15
+2 KA BUY AMZN $261 #0 15
+2 SM SELL AMD $250 #10 8
+2 AA SELL NFLX $188 #13 14
+3 OT BUY AMZN $256 #3 10
+3 KA BUY AMD $206 #9 17
+3 OT SELL AAPL $58 #13 19
+4 GS SELL NFLX $256 #9 0
+4 22B1053_22B0982 BUY AAPL $58 #6 -1
+4 KG BUY AMD $322 #14 10
+4 SM BUY AAPL $211 #5 9
+4 AKG SELL AAPL $22 #13 13
+5 KA BUY AMZN $23 #8 8
+5 22B1053_22B0982 SELL AAPL $211 #5 -1
+5 22B1053_22B0982 BUY AAPL $22 #7 -1
+5 AKG SELL GE $363 #2 13
+5 GS SELL AMD $242 #8 16
+5 SM BUY GE $231 #5 16
+6 KA BUY AAPL $98 #6 16
+6 22B1053_22B0982 SELL AAPL $98 #6 -1
+6 GS BUY AMD $193 #2 5
+6 KG SELL AAPL $129 #16 19
+6 OT SELL AMD $83 #9 11
+7 SM BUY AMD $289 #12 7
+7 22B1053_22B0982 SELL AMD $193 #2 -1
+7 SM BUY AMZN $14 #16 0
+7 KG BUY NFLX $310 #9 -1
+7 AA SELL AMD $279 #2 6
+8 KG BUY NFLX $137 #3 15
+8 AKG SELL AAPL $331 #6 -1
+8 OT BUY NFLX $270 #6 -1
+8 KA BUY AMD $494 #5 -1
+8 OT SELL AMD $132 #6 13
+9 22B1053_22B0982 SELL NFLX $270 #2 -1
+9 KA SELL NFLX $204 #9 7
+9 GS BUY AMZN $238 #0 8
+10 KG BUY GE $270 #0 -1
+10 AKG BUY NFLX $397 #7 -1
+10 AKG SELL GE $218 #14 14
+10 SM SELL GE $267 #10 -1
+11 KG BUY AMZN $97 #11 10
+11 OT BUY AMZN $274 #12 10
+11 AA BUY NFLX $396 #1 7
+11 SM BUY GE $96 #8 -1
+12 SM BUY NFLX $480 #13 8
+12 AKG SELL AMZN $295 #12 12
+12 22B1053_22B0982 SELL NFLX $480 #10 -1
+12 22B1053_22B0982 BUY AMZN $295 #1 -1
+12 KA BUY AMZN $29 #4 8
+13 SM SELL AMZN $162 #11 10
+13 SM SELL AAPL $102 #15 2
+13 KG BUY AMZN $113 #16 13
+13 AKG BUY NFLX $182 #11 13
+14 SM BUY GE $221 #0 15
+14 AA BUY AAPL $455 #16 8
+14 GS SELL AMD $202 #12 8
+14 AA BUY NFLX $477 #11 0
+15 KG BUY AMD $105 #0 10
+15 AKG BUY GE $94 #9 18
+15 GS SELL GE $103 #1 19
+15 22B1053_22B0982 SELL NFLX $477 #11 -1
+15 22B1053_22B0982 SELL AMD $105 #0 -1
+15 AA BUY GE $166 #0 17
+16 AA BUY AMZN $305 #16 19
+16 AKG SELL NFLX $370 #1 16
+16 KA BUY AMD $184 #13 16
+16 22B1053_22B0982 SELL AMZN $305 #16 -1
+16 22B1053_22B0982 SELL AMD $184 #7 -1
+16 GS SELL GE $286 #14 -1
+17 KA BUY NFLX $3 #0 4
+17 OT SELL NFLX $468 #9 -1
+17 AKG BUY GE $240 #7 17
+17 SM SELL AAPL $308 #10 11
+18 AKG BUY AMD $100 #13 9
+18 AA BUY AMZN $390 #16 6
+18 GS BUY NFLX $437 #5 -1
+18 22B1053_22B0982 SELL NFLX $437 #4 -1
+18 KG SELL NFLX $59 #7 18
+18 SV SELL AAPL $483 #12 8
+19 AKG BUY NFLX $74 #16 5
+19 OT SELL AMZN $404 #7 -1
+19 KG BUY AMZN $133 #8 1
+19 GS SELL NFLX $333 #15 19
+20 SM SELL AAPL $406 #16 7
+20 GS SELL NFLX $296 #15 16
+!@
+@!
+Successfully Initiated!
+KG purchased 5 share of AAPL from AA for $118/share
+KA purchased 9 share of AMD from AA for $70/share
+KG purchased 7 share of AAPL from OT for $118/share
+22B1053_22B0982 purchased 6 share of AAPL from OT for $58/share
+KG purchased 5 share of AMD from AA for $70/share
+KG purchased 9 share of AMD from SM for $250/share
+SM purchased 5 share of AAPL from AKG for $211/share
+22B1053_22B0982 purchased 7 share of AAPL from AKG for $22/share
+SM purchased 5 share of GE from GS for $165/share
+KA purchased 1 share of AAPL from AKG for $22/share
+KA purchased 5 share of AAPL from 22B1053_22B0982 for $98/share
+GS purchased 2 share of AMD from OT for $193/share
+SM purchased 7 share of AMD from OT for $83/share
+SM purchased 5 share of AMD from GS for $242/share
+KG purchased 9 share of NFLX from AA for $188/share
+OT purchased 4 share of NFLX from AA for $188/share
+KA purchased 2 share of AMD from 22B1053_22B0982 for $193/share
+KA purchased 3 share of AMD from GS for $242/share
+OT purchased 2 share of NFLX from 22B1053_22B0982 for $270/share
+KG purchased 0 share of GE from GS for $165/share
+AKG purchased 7 share of NFLX from KA for $204/share
+AA purchased 1 share of NFLX from KA for $204/share
+SM purchased 1 share of NFLX from KA for $204/share
+SV purchased 11 share of AMZN from AKG for $407/share
+SM purchased 10 share of NFLX from 22B1053_22B0982 for $480/share
+22B1053_22B0982 purchased 1 share of AMZN from AKG for $295/share
+OT purchased 11 share of AMZN from SM for $274/share
+SM purchased 0 share of GE from GS for $165/share
+AA purchased 1 share of AAPL from 22B1053_22B0982 for $98/share
+AA purchased 15 share of AAPL from SM for $102/share
+AA purchased 1 share of GE from GS for $157/share
+SM purchased 2 share of NFLX from 22B1053_22B0982 for $480/share
+KG purchased 0 share of AMD from 22B1053_22B0982 for $105/share
+AA purchased 0 share of GE from GS for $165/share
+KA purchased 6 share of AMD from OT for $132/share
+AA purchased 16 share of AMZN from 22B1053_22B0982 for $305/share
+KA purchased 7 share of AMD from 22B1053_22B0982 for $184/share
+AKG purchased 1 share of GE from GS for $165/share
+AKG purchased 6 share of GE from AKG for $218/share
+GS purchased 1 share of NFLX from AKG for $370/share
+GS purchased 4 share of NFLX from 22B1053_22B0982 for $437/share
+AKG purchased 7 share of NFLX from KG for $182/share
+
+---End of Day---
+Total Amount of Money Transferred: $42805
+Number of Completed Trades: 42
+Number of Shares Traded: 207
+GS bought 7 and sold 15 for a net transfer of $579
+KG bought 35 and sold 7 for a net transfer of $-4434
+SM bought 35 and sold 35 for a net transfer of $-2841
+SV bought 11 and sold 0 for a net transfer of $-4477
+OT bought 17 and sold 28 for a net transfer of $-1373
+KA bought 33 and sold 9 for a net transfer of $-2498
+AA bought 34 and sold 32 for a net transfer of $-2855
+AKG bought 21 and sold 32 for a net transfer of $3506
+22B1053_22B0982 bought 14 and sold 49 for a net transfer of $14393

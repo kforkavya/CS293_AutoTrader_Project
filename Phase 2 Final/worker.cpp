@@ -15,7 +15,7 @@ extern std::mutex printMutex;
 
 void* workerThread(void* arg) {
     int thread_id = *(int*)arg;
-    std::ifstream inputFile("inputs/input" + std::to_string(thread_id) + ".txt");
+    std::ifstream inputFile("samples/input11-14/input1" + std::to_string(thread_id) + ".txt");
     std::string line;
     for (int step = 0; step < NUM_STEPS; ++step) {
         int currentTime;

@@ -17,13 +17,15 @@ struct Trade_{
     int start;
     int end;
     bool b ; // 1b 0s
-    Trade_( bool b_ , int price_ , int quantity_ , int start_ , int end_ , std::string broker_){
+    int line_tec;
+    Trade_( bool b_ , int price_ , int quantity_ , int start_ , int end_ , std::string broker_ , int linexxx){
         b = b_;
         price = price_;
         quantity = quantity_;
         start = start_;
         end = end_;
         broker = broker_;
+        line_tec = linexxx;
     }
 
     void print_data(){
@@ -57,7 +59,7 @@ class Insider_Heap{
                 }
                 else if(v_heap[parent].price == v_heap[index].price){
                     //std::cout<<"2";
-                    if(v_heap[parent].start == v_heap[index].start){
+                    if(v_heap[parent].line_tec == v_heap[index].line_tec){
                         //std::cout<<"3";
                         if(v_heap[parent].broker > v_heap[index].broker){
                             std::swap(v_heap[parent], v_heap[index]);
@@ -87,7 +89,7 @@ class Insider_Heap{
                 }
                 else if(v_heap[parent].price == v_heap[index].price){
                     //std::cout<<"2";
-                    if(v_heap[parent].start == v_heap[index].start){
+                    if(v_heap[parent].line_tec == v_heap[index].line_tec){
                         //std::cout<<"3";
                         if(v_heap[parent].broker > v_heap[index].broker){
                             std::swap(v_heap[parent], v_heap[index]);
@@ -136,11 +138,11 @@ class Insider_Heap{
                     heapify(2*p+2+core);
                 }
                 if(rs == ls){
-                    if(v_heap[2*p+1+core].start < v_heap[2*p + 2].start){
+                    if(v_heap[2*p+1+core].line_tec < v_heap[2*p + 2].line_tec){
                         std::swap(v_heap[p + core],v_heap[2*p+1 + core]);
                         heapify(2*p+1+core);
                     }
-                    else if(v_heap[2*p+1+core].start > v_heap[2*p + 2].start){
+                    else if(v_heap[2*p+1+core].line_tec > v_heap[2*p + 2].line_tec){
                         std::swap(v_heap[p + core] ,v_heap[2*p+2 + core]);
                         heapify(2*p+2+core);
                     }
@@ -158,11 +160,11 @@ class Insider_Heap{
             }
             else{
                 if(ls > rs){ // ls matches with top
-                    if(v_heap[2*p+1+core].start < v_heap[p + core].start){
+                    if(v_heap[2*p+1+core].line_tec < v_heap[p + core].line_tec){
                         std::swap(v_heap[p + core],v_heap[2*p+1 + core]);
                         heapify(2*p+1+core);
                     }
-                    else if (v_heap[2*p+1+core].start == v_heap[p + core].start){
+                    else if (v_heap[2*p+1+core].line_tec == v_heap[p + core].line_tec){
                         if(v_heap[2*p+1+core].broker < v_heap[p + core].broker){
                             std::swap(v_heap[p + core],v_heap[2*p+1 + core]);
                             heapify(2*p+1+core);
@@ -174,11 +176,11 @@ class Insider_Heap{
                     }
                 }
                 if(ls < rs){ // rs matches with top
-                    if(v_heap[2*p+2+core].start < v_heap[p + core].start){
+                    if(v_heap[2*p+2+core].line_tec < v_heap[p + core].line_tec){
                         std::swap(v_heap[p + core],v_heap[2*p+2 + core]);
                         heapify(2*p+2+core);
                     }
-                    else if (v_heap[2*p+2+core].start == v_heap[p + core].start){
+                    else if (v_heap[2*p+2+core].line_tec == v_heap[p + core].line_tec){
                         if(v_heap[2*p+2+core].broker < v_heap[p + core].broker){
                             std::swap(v_heap[p + core],v_heap[2*p+2 + core]);
                             heapify(2*p+2+core);
@@ -192,11 +194,11 @@ class Insider_Heap{
 
                     // will write it
                     //std::cout<<"tec1";
-                    if(v_heap[2*p+1+core].start < v_heap[2*p + 2].start){
-                        if(v_heap[p+core].start < v_heap[2*p + 1].start){
+                    if(v_heap[2*p+1+core].line_tec < v_heap[2*p + 2].line_tec){
+                        if(v_heap[p+core].line_tec < v_heap[2*p + 1].line_tec){
                             // do nth
                         }
-                        else if(v_heap[p+core].start > v_heap[2*p + 1].start){
+                        else if(v_heap[p+core].line_tec > v_heap[2*p + 1].line_tec){
                             std::swap(v_heap[p + core] ,v_heap[2*p+1 + core]);
                             heapify(2*p+1+core);
                         }
@@ -207,11 +209,11 @@ class Insider_Heap{
                             }
                         }
                     }
-                    else if(v_heap[2*p+1+core].start > v_heap[2*p + 2].start){
-                        if(v_heap[p+core].start < v_heap[2*p + 2].start){
+                    else if(v_heap[2*p+1+core].line_tec > v_heap[2*p + 2].line_tec){
+                        if(v_heap[p+core].line_tec < v_heap[2*p + 2].line_tec){
                             // do nth
                         }
-                        else if(v_heap[p+core].start > v_heap[2*p + 2].start){
+                        else if(v_heap[p+core].line_tec > v_heap[2*p + 2].line_tec){
                             std::swap(v_heap[p + core] ,v_heap[2*p+2 + core]);
                             heapify(2*p+2+core);
                         }
@@ -226,7 +228,7 @@ class Insider_Heap{
 
                         // will do final
                         //std::cout<<"tecf1";
-                        if(v_heap[p+core].start == v_heap[2*p + 2].start){ // time stamps hai
+                        if(v_heap[p+core].line_tec == v_heap[2*p + 2].line_tec){ // time stamps hai
                             if(v_heap[p+core].broker > v_heap[2*p + 2].broker){
                                 std::swap(v_heap[p + core] ,v_heap[2*p+2 + core]);
                                 heapify(2*p+2+core);
@@ -240,7 +242,7 @@ class Insider_Heap{
                             }
                         }
                         else{
-                            if(v_heap[p+core].start > v_heap[2*p + 2].start){
+                            if(v_heap[p+core].line_tec > v_heap[2*p + 2].line_tec){
                                 if(v_heap[p+core].broker > v_heap[2*p + 2].broker){
                                     std::swap(v_heap[p + core] ,v_heap[2*p+2 + core]);
                                     heapify(2*p+2+core);
@@ -288,11 +290,11 @@ class Insider_Heap{
                     heapify(2*p+1+core);
                 }
                 if(rs == ls){
-                    if(v_heap[2*p+1+core].start < v_heap[2*p + 2].start){
+                    if(v_heap[2*p+1+core].line_tec < v_heap[2*p + 2].line_tec){
                         std::swap(v_heap[p + core],v_heap[2*p+1 + core]);
                         heapify(2*p+1+core);
                     }
-                    else if(v_heap[2*p+1+core].start > v_heap[2*p + 2].start){
+                    else if(v_heap[2*p+1+core].line_tec > v_heap[2*p + 2].line_tec){
                         std::swap(v_heap[p + core] ,v_heap[2*p+2 + core]);
                         heapify(2*p+2+core);
                     }
@@ -310,11 +312,11 @@ class Insider_Heap{
             }
             else{
                 if(ls < rs){ // ls matches with top
-                    if(v_heap[2*p+1+core].start < v_heap[p + core].start){
+                    if(v_heap[2*p+1+core].line_tec < v_heap[p + core].line_tec){
                         std::swap(v_heap[p + core],v_heap[2*p+1 + core]);
                         heapify(2*p+1+core);
                     }
-                    else if (v_heap[2*p+1+core].start == v_heap[p + core].start){
+                    else if (v_heap[2*p+1+core].line_tec == v_heap[p + core].line_tec){
                         if(v_heap[2*p+1+core].broker < v_heap[p + core].broker){
                             std::swap(v_heap[p + core],v_heap[2*p+1 + core]);
                             heapify(2*p+1+core);
@@ -325,11 +327,11 @@ class Insider_Heap{
                     }
                 }
                 if(ls > rs){ // rs matches with top
-                    if(v_heap[2*p+2+core].start < v_heap[p + core].start){
+                    if(v_heap[2*p+2+core].line_tec < v_heap[p + core].line_tec){
                         std::swap(v_heap[p + core],v_heap[2*p+2 + core]);
                         heapify(2*p+2+core);
                     }
-                    else if (v_heap[2*p+2+core].start == v_heap[p + core].start){
+                    else if (v_heap[2*p+2+core].line_tec == v_heap[p + core].line_tec){
                         if(v_heap[2*p+2+core].broker < v_heap[p + core].broker){
                             std::swap(v_heap[p + core],v_heap[2*p+2 + core]);
                             heapify(2*p+2+core);
@@ -343,11 +345,11 @@ class Insider_Heap{
 
                     // will write it
                     //std::cout<<"tec1";
-                    if(v_heap[2*p+1+core].start < v_heap[2*p + 2].start){
-                        if(v_heap[p+core].start < v_heap[2*p + 1].start){
+                    if(v_heap[2*p+1+core].line_tec < v_heap[2*p + 2].line_tec){
+                        if(v_heap[p+core].line_tec < v_heap[2*p + 1].line_tec){
                             // do nth
                         }
-                        else if(v_heap[p+core].start > v_heap[2*p + 1].start){
+                        else if(v_heap[p+core].line_tec > v_heap[2*p + 1].line_tec){
                             std::swap(v_heap[p + core] ,v_heap[2*p+1 + core]);
                             heapify(2*p+1+core);
                         }
@@ -358,11 +360,11 @@ class Insider_Heap{
                             }
                         }
                     }
-                    else if(v_heap[2*p+1+core].start > v_heap[2*p + 2].start){
-                        if(v_heap[p+core].start < v_heap[2*p + 2].start){
+                    else if(v_heap[2*p+1+core].line_tec > v_heap[2*p + 2].line_tec){
+                        if(v_heap[p+core].line_tec < v_heap[2*p + 2].line_tec){
                             // do nth
                         }
-                        else if(v_heap[p+core].start > v_heap[2*p + 2].start){
+                        else if(v_heap[p+core].line_tec > v_heap[2*p + 2].line_tec){
                             std::swap(v_heap[p + core] ,v_heap[2*p+2 + core]);
                             heapify(2*p+2+core);
                         }
@@ -377,7 +379,7 @@ class Insider_Heap{
 
                         // will do final
                         //std::cout<<"tecf1";
-                        if(v_heap[p+core].start == v_heap[2*p + 2].start){ // time stamps hai
+                        if(v_heap[p+core].line_tec == v_heap[2*p + 2].line_tec){ // time stamps hai
                             if(v_heap[p+core].broker > v_heap[2*p + 2].broker){
                                 std::swap(v_heap[p + core] ,v_heap[2*p+2 + core]);
                                 heapify(2*p+2+core);
@@ -391,7 +393,7 @@ class Insider_Heap{
                             }
                         }
                         else{
-                            if(v_heap[p+core].start > v_heap[2*p + 2].start){
+                            if(v_heap[p+core].line_tec > v_heap[2*p + 2].line_tec){
                                 if(v_heap[p+core].broker > v_heap[2*p + 2].broker){
                                     std::swap(v_heap[p + core] ,v_heap[2*p+2 + core]);
                                     heapify(2*p+2+core);
@@ -448,7 +450,7 @@ class Insider_Heap{
             }
         }
 
-        Trade_* trade_pointer = new Trade_(false , 0 , 0 , 0 , 0 , "blank");
+        Trade_* trade_pointer = new Trade_(false , 0 , 0 , 0 , 0 , "blank" , 0);
         *trade_pointer =  v_heap[0];
         return trade_pointer;
         //return nullptr;

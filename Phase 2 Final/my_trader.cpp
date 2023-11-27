@@ -14,6 +14,8 @@
 
 using namespace std;
 
+int order_no = 0;
+
 vector<Stock_RBT> table_2(5000);
 // int Money_Transfered_2 = 0;
 // int Completed_Trade_2 = 0;
@@ -255,7 +257,7 @@ static void give_orders_2(string stock1 , int key , int start, std::string& outp
                 //cout<<median<<endl;
                 //int quote_price = (sell->price)*0.2 + median*0.8;
                 int quote_price = sell->price;
-                output = "kforkavya BUY "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(sell->quantity) +" -1";
+                output = "22B1053_22B0982 BUY "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(sell->quantity) +" -1";
 
                 // update stuff
                 //cout<<"1"<<endl;
@@ -291,7 +293,7 @@ static void give_orders_2(string stock1 , int key , int start, std::string& outp
                 //cout<<median<<endl;
                 //int quote_price = (buy->price)*0.2 + median*0.8;
                 int quote_price = buy->price;
-                output = "kforkavya SELL "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(buy->quantity) +" -1";
+                output = "22B1053_22B0982 SELL "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(buy->quantity) +" -1";
                 // update stuff
                 //cout<<"1"<<endl;
                 p->insert_median(buy->price,buy->quantity);
@@ -457,7 +459,8 @@ static void string_process_2(const std::string& s, std::string& output) {
     if(SB == "BUY") b = true;
         else b = false;
 
-    Trade_* trade_pointer = new Trade_(b , price , quantity , start , timing + start , brokername);
+    Trade_* trade_pointer = new Trade_(b , price , quantity , start , timing + start , brokername, order_no);
+    order_no++;
 
     //cout<<trade_pointer->quantity<<endl;
 
