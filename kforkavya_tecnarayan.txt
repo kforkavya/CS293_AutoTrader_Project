@@ -1,0 +1,15 @@
+(1) RBT Deletion Code taken from https://www.programiz.com/dsa/deletion-from-a-red-black-tree
+    Used in :-
+        - phase1/deal_rbt.cpp
+        - phase1/order_book.cpp
+
+(2) Simple RBT Insertion Code header syntax (rest all written by me) from DSA (CS293) Lab : RBT trees
+    Used in :-
+        - phase1/stock_rbt.h
+        - phase2/stock_rbt_prime.h
+        - phase2/client_rbt.cpp
+        - phase2/simple_rbt.cpp
+
+(3) Hash function Idea from DSA (CS293) Lab 3
+    Used in :-
+        - phase1/hash.cpp

@@ -257,7 +257,13 @@ static void give_orders_2(string stock1 , int key , int start, std::string& outp
                 //cout<<median<<endl;
                 //int quote_price = (sell->price)*0.2 + median*0.8;
                 int quote_price = sell->price;
-                output = "22B1053_22B0982 BUY "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(sell->quantity) +" -1";
+                //output = "22B1053_22B0982 BUY "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(sell->quantity) +" -1";
+                if(sell->end > 100000){
+                    output = "22B1053_22B0982 BUY "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(sell->quantity) +" -1";
+                }
+                else{
+                    output = "22B1053_22B0982 BUY "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(sell->quantity) +" "+ std::to_string(sell->end-start);
+                }
 
                 // update stuff
                 //cout<<"1"<<endl;
@@ -293,7 +299,12 @@ static void give_orders_2(string stock1 , int key , int start, std::string& outp
                 //cout<<median<<endl;
                 //int quote_price = (buy->price)*0.2 + median*0.8;
                 int quote_price = buy->price;
-                output = "22B1053_22B0982 SELL "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(buy->quantity) +" -1";
+                if(buy->end > 100000){
+                    output = "22B1053_22B0982 SELL "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(buy->quantity) +" -1";
+                }
+                else{
+                    output = "22B1053_22B0982 SELL "+stock1+" $" + std::to_string(quote_price) +" #"+ std::to_string(buy->quantity) +" "+ std::to_string(buy->end-start ) ;
+                }
                 // update stuff
                 //cout<<"1"<<endl;
                 p->insert_median(buy->price,buy->quantity);
@@ -416,12 +427,39 @@ static void string_process_2(const std::string& s, std::string& output) {
 
     string stock_ = words[3];
 
+    std::vector<std::string> linear_combination;
     int length = words.size();
 
+    /////////////////////////////////////////
+
+    bool btec = true;
+    
     for(int ii = 4 ; ii <= length -4 ; ii++){
-        stock_.append(" ");
+        btec = false;
+        if(ii % 2 == 0){
+            stock_.append(" ");
+        }
         stock_.append(words[ii]);
+        if(ii % 2 == 0){
+            linear_combination.push_back(stock_);
+            stock_ = "";
+        }
     }
+
+    if(btec){
+        linear_combination.push_back(stock_);
+    }
+
+    sort(linear_combination.begin(),linear_combination.end());
+
+    stock_ = "";
+    for(auto I : linear_combination){
+        if(I == "")continue;
+        stock_.append(I);
+        stock_.append(" ");
+    }stock_.pop_back();
+
+    ///////////////////////////////////////
 
     if(words[length-3][0] != '$') return;
     if(words[length-2][0] != '#') return;
